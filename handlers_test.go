@@ -4,15 +4,21 @@ import (
 	"encoding/json"
 	"github.com/durolavoro/snippet-app/model"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
 
 func TestHome(t *testing.T) {
+	app := App{
+		ErrorLogger: log.New(ioutil.Discard, "", 0),
+		InfoLogger:  log.New(ioutil.Discard, "", 0),
+	}
+
 	rr := httptest.NewRecorder()
 	r := httptest.NewRequest(http.MethodGet, "/health", nil)
-	Home(rr, r, nil)
+	app.Home(rr, r, nil)
 	res := rr.Result()
 
 	if res.StatusCode != http.StatusOK {
@@ -39,6 +45,11 @@ func TestHome(t *testing.T) {
 }
 
 func TestShowSnippet(t *testing.T) {
+	app := App{
+		ErrorLogger: log.New(ioutil.Discard, "", 0),
+		InfoLogger:  log.New(ioutil.Discard, "", 0),
+	}
+
 	tt := []struct {
 		name string
 		path string
@@ -66,7 +77,7 @@ func TestShowSnippet(t *testing.T) {
 			rr := httptest.NewRecorder()
 			r := httptest.NewRequest(http.MethodGet, test.path, nil)
 
-			ShowSnippet(rr, r, nil)
+			app.ShowSnippet(rr, r, nil)
 			resp := rr.Result()
 
 			if resp.StatusCode != test.want {

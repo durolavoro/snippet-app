@@ -9,7 +9,12 @@ import (
 	"strings"
 )
 
-func Home(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
+type App struct {
+	ErrorLogger *log.Logger
+	InfoLogger  *log.Logger
+}
+
+func (a *App) Home(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 	err := SendOKResponse(w, map[string]string{
 		"version": "v1",
 		"status":  "OK",
@@ -20,7 +25,7 @@ func Home(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 	}
 }
 
-func ShowSnippet(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (a *App) ShowSnippet(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	idStr := r.URL.Query().Get("id")
 	var err error
 	if strings.EqualFold(idStr, "") {
@@ -30,7 +35,10 @@ func ShowSnippet(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	} else {
 		id, convErr := strconv.Atoi(idStr)
 		if convErr != nil {
-			http.Error(w, "invalid value for query param id", http.StatusBadRequest)
+			http.Error(w,
+				fmt.Sprintf("%s - invalid value for param id", http.StatusText(http.StatusBadRequest)),
+				http.StatusBadRequest,
+			)
 			return
 		}
 		err = SendOKResponse(w, map[string]string{
@@ -44,7 +52,7 @@ func ShowSnippet(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 }
 
-func CreateSnippet(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
+func (a *App) CreateSnippet(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 	err := SendOKResponse(w, map[string]string{
 		"message": "Creating a new snippet...",
 	})
