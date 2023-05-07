@@ -9,6 +9,6 @@ func (a *App) routes() *httprouter.Router {
 	mux.GET("/health", a.Home)
 	mux.GET("/snippet", a.ShowSnippet)
 	mux.POST("/snippet", a.CreateSnippet)
-
+	mux.POST("/snippets", a.CreateSnippets)
 	return mux
 }

@@ -10,6 +10,7 @@ import (
 	"testing"
 )
 
+// Unit testing reference
 func TestHome(t *testing.T) {
 	app := App{
 		ErrorLogger: log.New(ioutil.Discard, "", 0),
