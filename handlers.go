@@ -94,7 +94,8 @@ func (a *App) CreateSnippets(w http.ResponseWriter, r *http.Request, _ httproute
 	err = json.Unmarshal(p, &snips)
 	if err != nil {
 	}
-	
+
+	// MB concurrency related pattern information here
 	errChan := make(chan error, len(snips.Snippets))
 	var wg sync.WaitGroup
 	for i := 0; i < len(snips.Snippets); i++ {
@@ -112,7 +113,8 @@ func (a *App) CreateSnippets(w http.ResponseWriter, r *http.Request, _ httproute
 	wg.Wait()
 	close(errChan)
 	a.InfoLogger.Printf("concurrent inserts have concluded with %d errors", len(errChan))
-	var errMap = make(map[string]string, 0)
+
+	var errMap = make(map[string]string)
 	errCounter := 0
 	for errs := range errChan {
 		errMap[fmt.Sprintf("err%d", errCounter)] = errs.Error()

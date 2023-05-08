@@ -16,6 +16,8 @@ const (
 	DELETE_FROM_SNIPPETS = "DELETE FROM snippets WHERE ID=?"
 )
 
+// MB Database/DAL related stuff
+
 type DAL struct {
 	DB *sql.DB
 }

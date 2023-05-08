@@ -31,7 +31,7 @@ func main() {
 	}
 	defer db.Close()
 	dal := dal.CreateDAL(db)
-	// dependency injection pattern reference
+	// MB dependency injection pattern reference
 	a := &App{
 		InfoLogger:  infoLogger,
 		ErrorLogger: errorLogger,

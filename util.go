@@ -8,6 +8,8 @@ import (
 	"runtime/debug"
 )
 
+// MB consolidated error handling reference
+
 var errMarshalling = errors.New("error marshalling body json")
 
 func SendResponse(w http.ResponseWriter, body interface{}, code int) error {
